@@ -37,14 +37,17 @@ def discover_book_urls() -> list[tuple[str, str]]:
         discovered.extend((url, page_url) for url in book_urls)
         page_url = next_url
 
-    # the canonical product_url is each record's identity; keep the first occurrence
-    seen: dict[str, str] = {}
-    for url, source in discovered:
-        seen.setdefault(url, source)
-    unique = list(seen.items())
-
+    unique = dedupe_by_url(discovered)
     print(f"catalogue_pages={pages} discovered={len(discovered)} unique_urls={len(unique)}")
     return pages, unique
+
+
+def dedupe_by_url(pairs: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """The canonical product_url is each record's identity; keep the first occurrence."""
+    seen: dict[str, str] = {}
+    for url, source in pairs:
+        seen.setdefault(url, source)
+    return list(seen.items())
 
 
 def cache_name_for(product_url: str) -> str:
