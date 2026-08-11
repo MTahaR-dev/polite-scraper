@@ -3,6 +3,7 @@
 import json
 
 from fetcher import fetch
+from normalize import normalize
 from parser import parse_book, parse_catalogue
 
 CATALOGUE_PAGE_1 = "https://books.toscrape.com/catalogue/page-1.html"
@@ -42,7 +43,7 @@ def scrape_books(book_urls: list[tuple[str, str]]) -> list[dict]:
     records = []
     for product_url, source_page in book_urls:
         html = fetch(product_url, cache_name_for(product_url))
-        records.append(parse_book(html, product_url, source_page))
+        records.append(normalize(parse_book(html, product_url, source_page)))
     print(f"detail_pages={len(records)}")
     return records
 
