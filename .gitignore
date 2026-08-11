@@ -1,0 +1,12 @@
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Cached HTML - regenerated on every run, never committed
+cache/
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
