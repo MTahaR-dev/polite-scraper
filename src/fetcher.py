@@ -46,6 +46,9 @@ def fetch(url: str, cache_name: str) -> str:
         stats["failed"] += 1
         raise FetchError(f"HTTP {response.status_code}")
 
+    # the site sends UTF-8 but declares no charset; without this, requests guesses Latin-1
+    response.encoding = response.apparent_encoding or "utf-8"
+
     html = response.text
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     path.write_text(html, encoding="utf-8")
